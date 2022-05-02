@@ -6,7 +6,7 @@
         <Property name="LOG_LEVEL">INFO</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="APPLOG" fileName="${LOG_PATH}/gssot.log"
+        <RollingFile name="APPLOG" fileName="${LOG_PATH}/gsso.log"
                      filePattern="${LOG_PATH}/gsso.%d{yyyy-MM-dd}-%i.log.gz" >
             <VAMLog4j2Layout module="gsso" ipAddress="${IP_ADDRESS}"/>
 
