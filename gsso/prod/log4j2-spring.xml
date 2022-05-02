@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATH">/usr/local/tomcat/VAM/gsso/log</Property>
+        <Property name="IP_ADDRESS">NULL</Property>
+        <Property name="LOG_LEVEL">INFO</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="APPLOG" fileName="${LOG_PATH}/gsso.log"
+                     filePattern="${LOG_PATH}/gsso.%d{yyyy-MM-dd}-%i.log.gz" >
+            <VAMLog4j2Layout module="gsso" ipAddress="${IP_ADDRESS}"/>
+
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+                <TimeBasedTriggeringPolicy interval="12" modulate="true"/>
+            </Policies>
+            <!-- keep 30 days' worth of history -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOG_PATH}" maxDepth="1">
+                    <IfFileName glob="*/gsso.*.log.gz" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.hibernate.jpa" level="${LOG_LEVEL}" />
+        <Logger name="org.hibernate.SQL" level="${LOG_LEVEL}" />
+        <!-- Set to loglevel TRACE to show parameters -->
+        <Logger name="org.hibernate.type" level="${LOG_LEVEL}" />
+        <Logger name="org.springframework.jdbc" level="${LOG_LEVEL}"/>
+        <Logger name="org.springframework.security" level="${LOG_LEVEL}"/>
+        <Logger name="org.glassfish.jersey.logging" level="${LOG_LEVEL}"/>
+        <Logger name="org.springframework.boot" level="${LOG_LEVEL}"/>
+        <!-- For testing, lets get all application internal logging (but avoid messages from other libs -->
+        <Logger name="com.tieto.pcm.gsso" level="${LOG_LEVEL}"/>
+        <Logger name="com.tieto.pcm.approval" level="${LOG_LEVEL}"/>
+
+        <Root level="${LOG_LEVEL}">
+            <AppenderRef ref="APPLOG" />
+        </Root>
+    </Loggers>
+</Configuration>
